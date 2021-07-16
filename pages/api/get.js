@@ -16,9 +16,14 @@ export default async (req, res) => {
         "Slug": 1,
         "Date": 1,
         "Status": 1,
-        "attendees": 1,
+        "Colors": 1,
+        "Message": 1,
+        "Created": 1,
+        "Updated": 1,
+        // "attendees": 1,
+        "attendees": { $size: "$attendees"},
       }}
-    ]).toArray();
+    ]).sort({ Date: -1 }) .toArray();
 
     return res.json(rs);
   } catch (error) {

@@ -9,6 +9,22 @@ import { connect } from "../../../libs/database";
 import fetchJson from '../../../libs/fetchJson';
 import { generatePOSTData, getDate } from '../../../libs/utils';
 
+const pictures = [
+  "illstration-01.png",
+  "undraw_Development_re_g5hq.png",
+  "undraw_Experts_re_i40h.png",
+  "undraw_Filing_system_re_56h6.png",
+  "undraw_Playful_cat_re_bxiu.png",
+  "undraw_version_control_re_mg66.png",
+  "undraw_visual_data_re_mxxo.png",
+]
+
+function getRandomPicture() {
+  const arr = pictures
+  arr.sort(() => Math.random() - 0.5);
+  return arr[0]
+}
+
 const NewAttendee = ({ project }) => {
   const router = useRouter();
 
@@ -22,9 +38,9 @@ const NewAttendee = ({ project }) => {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
 
-
-  const color1 = "indigo";
-  const color2 = "pink";
+  const color1 = project.Colors[0] || "indigo";
+  const color2 = project.Colors[1] || "pink";
+  const picture = getRandomPicture()
 
   const twInput = `peer w-full py-2 border-b-2 rounded-none text-xl font-bold
   border-${color2}-500 focus:border-${color1}-500 text-gray-700 
@@ -125,7 +141,7 @@ const NewAttendee = ({ project }) => {
             {/* HeroImg 1 */}
             <div className="max-w-xl mx-auto p-4">
               <div className="w-3/5 mx-auto lg:hidden">
-                <img className="" style={{ width: '100%'}} src="/illstration-01.png" />
+                <img className="" style={{ width: '100%'}} src={`/${picture}`} />
               </div>
             </div>
             
@@ -235,7 +251,7 @@ const NewAttendee = ({ project }) => {
               <div className="hidden lg:block flex-grow py-5 lg:py-0">
                 <div className="h-56 lg:h-full mb-2 lg:mb-0 flex items-center justify-center max-w-xl mx-auto">
                   <div className="w-3/5 lg:w-5/6 p-3 lg:p-0">
-                    <img className="" style={{ width: '100%'}} src="/illstration-01.png" />
+                    <img className="" style={{ width: '100%'}} src={`/${picture}`} />
                   </div>
                 </div>
               </div>
