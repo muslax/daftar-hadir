@@ -309,7 +309,7 @@ export async function getStaticPaths() {
   console.log("PATHS", paths);
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
@@ -330,6 +330,6 @@ export async function getStaticProps({ params }) {
     props: {
       project,
     },
-    revalidate: 30, // In 30 seconds
+    revalidate: 10, // In 30 seconds
   }
 }
