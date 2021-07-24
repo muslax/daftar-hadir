@@ -17,6 +17,7 @@ export default async (req, res) => {
       { $lookup: {from:DB_ATTENDEE, as:'attendees', localField:'_id',foreignField:'eventId'}},
       { $project: {
         Title: 1,
+        Date: 1,
         attendees: 1,
       }}
     ]).toArray()
