@@ -12,6 +12,7 @@ import fetchJson from "../libs/fetchJson";
 import useProjects from '../hooks/useProjects';
 import { generatePOSTData } from "../libs/utils";
 
+// https://gist.github.com/codeguy/6684588
 function string_to_slug (str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();
@@ -195,6 +196,14 @@ const ManageProjects = ({ projects }) => {
           <tr className="border-b-2 border-amber-800">
             <td colSpan="2" className="p-2 w-24 text-right whitespace-nowrap">Signee:</td>
             <td className="p-2 font-semibold">{p.attendees}</td>
+          </tr>
+          <tr className="border-b-2 border-amber-800">
+            <td colSpan="2" className="p-2 w-24 text-right whitespace-nowrap">Presensi:</td>
+            <td className="p-2 font-semibold">
+            <Link href={`/listing?pid=${p._id}`}>
+                <a className="text-rose-500 hover:underline">XXX</a>
+              </Link>
+            </td>
           </tr>
           </>}
         </tbody>

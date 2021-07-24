@@ -318,7 +318,7 @@ export async function getStaticProps({ params }) {
 
   pictures.sort(() => Math.random() - 0.5)
 
-  console.log("PROJECT", project);
+  // console.log("PROJECT", project);
 
   return {
     props: {
