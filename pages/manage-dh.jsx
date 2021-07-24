@@ -12,13 +12,32 @@ import fetchJson from "../libs/fetchJson";
 import useProjects from '../hooks/useProjects';
 import { generatePOSTData } from "../libs/utils";
 
+function string_to_slug (str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  var to   = "aaaaeeeeiiiioooouuuunc------";
+  for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+}
+
 const ManageProjects = ({ projects }) => {
   const { projects: swrProjects, isLoading, mutate } = useProjects()
 
   const [pageProjects, setPageProjects] = useState(projects)
   const [showForm, setShowForm] = useState(false)
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState(new Date().toISOString().substr(0, 10))
   const [title, setTitle] = useState("")
+  const [slug, setSlug] = useState("")
   const [message, setMessage] = useState("")
   const [colors, setColors] = useState("indigo pink")
 
@@ -30,7 +49,7 @@ const ManageProjects = ({ projects }) => {
 
   async function saveProject(e) {
     const url = "/api/new-project"
-    const slug = title.trim().toLocaleLowerCase().split(" ").join("-")
+    // const slug = title.trim().toLocaleLowerCase().split(" ").join("-")
     const resp = await fetchJson(url, generatePOSTData({
       title, slug, date, message, colors
     }))
@@ -81,7 +100,21 @@ const ManageProjects = ({ projects }) => {
                   type="text"
                   value={title}
                   className={`w-full ${inputClass}`}
-                  onChange={e => setTitle(e.target.value)}
+                  onChange={e => {
+                    setTitle(e.target.value)
+                    setSlug(string_to_slug(e.target.value))
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="w-36 p-2 text-right">Slug</td>
+              <td className="p-2">
+                <input
+                  type="text"
+                  value={slug}
+                  className={`w-full ${inputClass}`}
+                  onChange={e => setSlug(e.target.value)}
                 />
               </td>
             </tr>
@@ -168,16 +201,18 @@ const ManageProjects = ({ projects }) => {
       ))}
       </table>
       )}
-      
-      <pre className="bg-white px-3 py-2 text-xs overflow-x-scroll my-8">
-        {showForm && <>
-        Date:    {date}<br/>
-        Title:   {title}<br/>
-        Message: {message}<br/>
-        Colors:  {colors}<br/>
-        </>}
-        {!showForm && JSON.stringify(projects[0], null, 2)}
-      </pre>
+
+      {showForm && <div>
+        <p className="py-2">{`https://undangan.gaianets.com/${date.replaceAll('-', '')}/${slug}`}</p>
+        
+        <pre className="bg-white px-3 py-2 text-xs overflow-x-scroll my-8">
+          Date:    {date}<br/>
+          Title:   {title}<br/>
+          Slug:    {slug}<br/>
+          Message: {message}<br/>
+          Colors:  {colors}<br/>
+        </pre>
+      </div>}
 
       {/* Padding */}
       <div className="h-32"></div>
