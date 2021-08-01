@@ -79,7 +79,7 @@ export default function Draft({ project }) {
 
   return <>
     <Head>
-      <title>Formulir Dafar Hadir XXX</title>
+      <title>Formulir Dafar Hadir {project.Title}</title>
     </Head>
 
     <div className="hidden">
